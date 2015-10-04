@@ -11,6 +11,7 @@ import java.util.List;
 import static org.junit.Assert.assertTrue;
 
 /**
+ * Step definition class for wordsofnumbers feature
  * Created by dibek on 03/10/15.
  */
 

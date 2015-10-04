@@ -10,6 +10,10 @@ import java.util.regex.Pattern;
  */
 public class WordsOfNumbers {
 
+
+    /**
+     * Enum to retrieve basic numbers
+     */
     public enum BaseNumbers {
 
         ZERO(0),
@@ -54,6 +58,12 @@ public class WordsOfNumbers {
 
         }
 
+        /**
+         * Find the enum from the value
+         *
+         * @param num
+         * @return
+         */
         public static BaseNumbers findFromNum(int num) {
             BaseNumbers tensNumbers = NOTFOUND;
             for (BaseNumbers tensNumbersItem : BaseNumbers.values()) {
@@ -66,6 +76,12 @@ public class WordsOfNumbers {
         }
     }
 
+    /**
+     * A method to transform a number to its string value
+     *
+     * @param number
+     * @return The string representation of the number
+     */
     public static String transform(Long number) {
 
         String dlm = " and ";
@@ -74,7 +90,7 @@ public class WordsOfNumbers {
         }
         Integer exp = getExpValue(number);
 
-        String wordNum = extractWordNum("",number, exp);
+        String wordNum = extractWordNum("", number, exp);
 
         String plainNumber = String.valueOf(number);
         int i = 1;
@@ -96,12 +112,9 @@ public class WordsOfNumbers {
                     newNum = Long.valueOf(plainNumber);
                     newExpValue = getExpValue(newNum);
                     if (exp - newExpValue > 1) {
-                        //wordNum = wordNum.replaceAll(dlm, " ");
-                        wordNum = extractWordNum(wordNum,newNum, newExpValue);
-                    } else
-                    if (newExpValue > 0) {
-                        //wordNum = wordNum.replaceAll(dlm, " ");
-                        wordNum = extractWordNum(wordNum,newNum, newExpValue);
+                        wordNum = extractWordNum(wordNum, newNum, newExpValue);
+                    } else if (newExpValue > 0) {
+                        wordNum = extractWordNum(wordNum, newNum, newExpValue);
                     }
 
                     exp = getExpValue(newNum);
@@ -119,7 +132,15 @@ public class WordsOfNumbers {
         return wordNum;
     }
 
-    private static String extractWordNum(String wordNum,Long number, int expValue) {
+    /**
+     * Convert a number to its string representation adding eventually to an existing string
+     *
+     * @param wordNum  The original string
+     * @param number   The number to transform
+     * @param expValue The exp value of the number
+     * @return The new string representing the number
+     */
+    private static String extractWordNum(String wordNum, Long number, int expValue) {
 
 
         String dlm = " ";
@@ -136,7 +157,7 @@ public class WordsOfNumbers {
                 if (baseNumbers.equals(BaseNumbers.NOTFOUND)) {
                     baseNumbers = BaseNumbers.findFromNum(Integer.valueOf(firstDigit + "0"));
                 }
-                if (!wordNum.equals("")){
+                if (!wordNum.equals("")) {
                     wordNum += sep;
                 }
                 wordNum += baseNumbers.name().toLowerCase();
@@ -149,20 +170,20 @@ public class WordsOfNumbers {
                 wordNum += dlm + strFirstDigit + dlm + "hundred";
                 break;
             case 3:
-                if (!wordNum.equals("")){
+                if (!wordNum.equals("")) {
                     wordNum += sep;
                 }
                 wordNum += strFirstDigit + dlm + "thousand";
                 break;
             case 4:
 
-                if (!wordNum.equals("")){
+                if (!wordNum.equals("")) {
                     wordNum += sep;
                 }
                 calcModule = extractBaseExp(10, expValue - 2);
                 firstDigit = Long.valueOf(number / calcModule).intValue();
                 Long newFirstDigitsNum = Long.valueOf(firstDigit);
-                strFirstDigit = extractWordNum("",newFirstDigitsNum, getExpValue(newFirstDigitsNum));
+                strFirstDigit = extractWordNum("", newFirstDigitsNum, getExpValue(newFirstDigitsNum));
                 wordNum += strFirstDigit + dlm + "thousand";
                 break;
             case 5:
@@ -174,13 +195,13 @@ public class WordsOfNumbers {
                 wordNum += dlm + strFirstDigit + dlm + "million";
                 break;
             case 7:
-                if (!wordNum.equals("")){
+                if (!wordNum.equals("")) {
                     wordNum += sep;
                 }
                 calcModule = extractBaseExp(10, expValue - 2);
                 firstDigit = Long.valueOf(number / calcModule).intValue();
                 newFirstDigitsNum = Long.valueOf(firstDigit);
-                strFirstDigit = extractWordNum("",newFirstDigitsNum, getExpValue(newFirstDigitsNum));
+                strFirstDigit = extractWordNum("", newFirstDigitsNum, getExpValue(newFirstDigitsNum));
                 wordNum += strFirstDigit + dlm + "million";
                 break;
             case 8:
@@ -190,7 +211,7 @@ public class WordsOfNumbers {
                 wordNum += strFirstDigit + dlm + "billion";
                 break;
             default:
-                if (!wordNum.equals("")){
+                if (!wordNum.equals("")) {
                     wordNum += sep;
                 }
                 baseNumbers = BaseNumbers.findFromNum(number.intValue());
@@ -208,16 +229,20 @@ public class WordsOfNumbers {
         return baseExp;
     }
 
-
+    /**
+     * Extract the power in base 10 of the number
+     *
+     * @param number
+     * @return
+     */
     private static Integer getExpValue(Long number) {
         NumberFormat formatter = new DecimalFormat("0E0");
-
         String expNumber = formatter.format(number);
         int indexE = expNumber.indexOf("E");
-
         String expFound = expNumber.substring(indexE + 1);
         return Integer.valueOf(expFound);
     }
+
 
     public static void main(String[] args) {
         System.out.println("Hello words of numbers!");
