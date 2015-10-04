@@ -53,8 +53,8 @@ Feature: I transform a list of number in the english words
 
     And I have a list of words
       | one thousand and four             |
-      | one thousand and one hundred and five |
-      | two thousand and three hundred        |
+      | one thousand one hundred and five |
+      | two thousand three hundred        |
 
     Then The transformation of the element in the number list should give the the list in words list
 
@@ -79,8 +79,8 @@ Feature: I transform a list of number in the english words
       | one hundred and twenty three                                                        |
       | one thousand and five                                                               |
       | one thousand and forty two                                                          |
-      | one thousand and one hundred and five                                                   |
-      | fifty six million and nine hundred and forty five thousand and seven hundred and eighty one |
+      | one thousand one hundred and five                                                   |
+      | fifty six million nine hundred and forty five thousand seven hundred and eighty one |
 
 
     Then The transformation of the element in the number list should give the the list in words list
@@ -91,8 +91,8 @@ Feature: I transform a list of number in the english words
       | 945781 |
       | 56945781 |
     And I have a list of words
-      | nine hundred and forty five thousand and seven hundred and eighty one |
-      | fifty six million and nine hundred and forty five thousand and seven hundred and eighty one |
+      | nine hundred and forty five thousand seven hundred and eighty one |
+      | fifty six million nine hundred and forty five thousand seven hundred and eighty one |
 
 
     Then The transformation of the element in the number list should give the the list in words list

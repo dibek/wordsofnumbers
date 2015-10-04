@@ -74,7 +74,7 @@ public class WordsOfNumbers {
         }
         Integer exp = getExpValue(number);
 
-        String wordNum = extractWordNum(number, exp);
+        String wordNum = extractWordNum("",number, exp);
 
         String plainNumber = String.valueOf(number);
         int i = 1;
@@ -97,11 +97,11 @@ public class WordsOfNumbers {
                     newExpValue = getExpValue(newNum);
                     if (exp - newExpValue > 1) {
                         //wordNum = wordNum.replaceAll(dlm, " ");
-                        wordNum += dlm + extractWordNum(newNum, newExpValue);
+                        wordNum = extractWordNum(wordNum,newNum, newExpValue);
                     } else
                     if (newExpValue > 0) {
                         //wordNum = wordNum.replaceAll(dlm, " ");
-                        wordNum += dlm + extractWordNum(newNum, newExpValue);
+                        wordNum = extractWordNum(wordNum,newNum, newExpValue);
                     }
 
                     exp = getExpValue(newNum);
@@ -119,10 +119,12 @@ public class WordsOfNumbers {
         return wordNum;
     }
 
-    private static String extractWordNum(Long number, int expValue) {
+    private static String extractWordNum(String wordNum,Long number, int expValue) {
 
-        String wordNum = "";
+
         String dlm = " ";
+        String sep = " and ";
+
         int calcModule = extractBaseExp(10, expValue - 1);
         int firstDigit = Long.valueOf(number / calcModule).intValue();
         BaseNumbers baseNumbers = BaseNumbers.findFromNum(firstDigit);
@@ -134,56 +136,65 @@ public class WordsOfNumbers {
                 if (baseNumbers.equals(BaseNumbers.NOTFOUND)) {
                     baseNumbers = BaseNumbers.findFromNum(Integer.valueOf(firstDigit + "0"));
                 }
-                wordNum = baseNumbers.name().toLowerCase();
+                if (!wordNum.equals("")){
+                    wordNum += sep;
+                }
+                wordNum += baseNumbers.name().toLowerCase();
                 if (number.intValue() - baseNumbers.getNum() > 0) {
                     String strSecondDigit = BaseNumbers.findFromNum(number.intValue() - baseNumbers.getNum()).toString().toLowerCase();
                     wordNum += dlm + strSecondDigit;
                 }
                 break;
             case 2:
-                wordNum = "hundred";
-                wordNum = strFirstDigit + dlm + wordNum;
+                wordNum += dlm + strFirstDigit + dlm + "hundred";
                 break;
             case 3:
-                wordNum = "thousand";
-                wordNum = strFirstDigit + dlm + wordNum;
+                if (!wordNum.equals("")){
+                    wordNum += sep;
+                }
+                wordNum += strFirstDigit + dlm + "thousand";
                 break;
             case 4:
 
-                wordNum = "thousand";
+                if (!wordNum.equals("")){
+                    wordNum += sep;
+                }
                 calcModule = extractBaseExp(10, expValue - 2);
                 firstDigit = Long.valueOf(number / calcModule).intValue();
                 Long newFirstDigitsNum = Long.valueOf(firstDigit);
-                strFirstDigit = extractWordNum(newFirstDigitsNum, getExpValue(newFirstDigitsNum));
-                wordNum = strFirstDigit + dlm + wordNum;
+                strFirstDigit = extractWordNum("",newFirstDigitsNum, getExpValue(newFirstDigitsNum));
+                wordNum += strFirstDigit + dlm + "thousand";
                 break;
             case 5:
-                wordNum = "hundred";
-                wordNum = strFirstDigit + dlm + wordNum;
+                //wordNum = "hundred";
+                wordNum += dlm + strFirstDigit + dlm + "hundred";
                 break;
             case 6:
-                wordNum = "million";
-                wordNum = strFirstDigit + dlm + wordNum;
+                //wordNum = "million";
+                wordNum += dlm + strFirstDigit + dlm + "million";
                 break;
             case 7:
-                wordNum = "million";
+                if (!wordNum.equals("")){
+                    wordNum += sep;
+                }
                 calcModule = extractBaseExp(10, expValue - 2);
                 firstDigit = Long.valueOf(number / calcModule).intValue();
                 newFirstDigitsNum = Long.valueOf(firstDigit);
-                strFirstDigit = extractWordNum(newFirstDigitsNum, getExpValue(newFirstDigitsNum));
-                wordNum = strFirstDigit + dlm + wordNum;
+                strFirstDigit = extractWordNum("",newFirstDigitsNum, getExpValue(newFirstDigitsNum));
+                wordNum += strFirstDigit + dlm + "million";
                 break;
             case 8:
-                wordNum = "hundred";
-                wordNum = strFirstDigit + dlm + wordNum;
+                wordNum += dlm + strFirstDigit + dlm + "hundred";
                 break;
             case 9:
-                wordNum = "billion";
-                wordNum = strFirstDigit + dlm + wordNum;
+                wordNum += strFirstDigit + dlm + "billion";
                 break;
             default:
+                if (!wordNum.equals("")){
+                    wordNum += sep;
+                }
                 baseNumbers = BaseNumbers.findFromNum(number.intValue());
-                wordNum = baseNumbers.name().toLowerCase();
+                wordNum += baseNumbers.name().toLowerCase();
         }
 
         return wordNum;
