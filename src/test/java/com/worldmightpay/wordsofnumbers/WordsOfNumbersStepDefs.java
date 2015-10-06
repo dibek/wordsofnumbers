@@ -33,8 +33,10 @@ public class WordsOfNumbersStepDefs {
 
     @Then("^The transformation of the element in the number list should give the the list in words list$")
     public void The_transformation_of_the_element_in_the_number_list_should_give_the_the_list_in_words_list() throws Throwable {
+
+        NumberTransformer numberTransformer = new NumberTransformerImpl();
        for (Long num:numbers) {
-           String wordNumber = WordsOfNumbers.transform(num);
+           String wordNumber = numberTransformer.transform(num);
             assertTrue(wordsToTest.contains(wordNumber.trim()));
            System.out.println(num + " tested");
        }
